@@ -1,19 +1,24 @@
-import { Body, Controller, Post } from '@nestjs/common';
+import { Body, Controller, Get, Post } from '@nestjs/common';
 import { PusherService } from './pusher.service';
 
 @Controller()
 export class AppController {
   constructor(private pusherService: PusherService) {}
 
-  @Post('path:message')
+  @Get()
+  getHello(): string {
+    return 'Hello World!';
+  }
+  @Post('messages')
   async messages(
     @Body('username') username: string,
     @Body('message') message: string,
   ) {
-    await this.pusherService.trigger('channel', message, {
+    await this.pusherService.trigger('chat', 'message', {
       username,
       message,
     });
+
     return [];
   }
 }
